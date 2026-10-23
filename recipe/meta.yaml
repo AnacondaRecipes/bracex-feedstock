@@ -1,0 +1,52 @@
+{% set name = "bracex" %}
+{% set version = "3.2" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: 0a3d40bfae4caae4d3bfd0ea715874799fab711c38fd4012cc35343e815405cd
+
+build:
+  number: 0
+  skip: true # [py<311]
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+
+requirements:
+  host:
+    - python
+    - hatchling >=0.21.1
+    - pip
+  run:
+    - python
+
+test:
+  source_files:
+    - tests
+  imports:
+    - bracex
+  commands:
+    - pip check
+    - pytest -vv
+  requires:
+    - pip
+    - python
+    - pytest
+
+about:
+  summary: Bash style brace expander.
+  license: MIT
+  license_file: LICENSE.md
+  license_family: MIT
+  homepage: https://github.com/facelessuser/bracex
+  doc_url: https://github.com/facelessuser/bracex
+  dev_url: https://github.com/facelessuser/bracex
+  description: |
+    Bracex is a brace expanding library (à la Bash) for Python. Brace expanding is used to generate arbitrary strings.
+
+extra:
+  recipe-maintainers:
+    - asford
+    - ocefpaf
